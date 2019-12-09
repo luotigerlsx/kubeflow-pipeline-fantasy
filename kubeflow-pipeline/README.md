@@ -12,6 +12,7 @@ Docker containers. The `Kubeflow Pipelines` platform consists of:
 - An SDK for defining and manipulating pipelines and components.
 - Notebooks for interacting with the system using the SDK.
 
+## Content Overview:
 In this tutorial, we provided a series of notebooks to demonstrate how to interact with Kubeflow Pipelines with
 [Python SDK](https://github.com/kubeflow/pipelines/tree/master/sdk/python/kfp) through one concrete use case, i.e.,
 [MINIST classification](https://www.tensorflow.org/tutorials/quickstart/beginner).
@@ -57,9 +58,10 @@ The pipeline uses a public BigQuery dataset and uses GCP services to preprocess 
 ## Setups Overview:
 ### Prerequisites
 Before you follow the instructions below to deploy your own kubeflow cluster, you should
-    - have a [GCP project setup](https://www.kubeflow.org/docs/gke/deploy/project-setup/) for your Kubeflow Deployment 
-    with you having the [owner role](https://cloud.google.com/iam/docs/understanding-roles#primitive_role_definitions) 
-    for the project and with the following APIs enabled:
+
+- have a [GCP project setup](https://www.kubeflow.org/docs/gke/deploy/project-setup/) for your Kubeflow Deployment 
+with you having the [owner role](https://cloud.google.com/iam/docs/understanding-roles#primitive_role_definitions) 
+for the project and with the following APIs enabled:
     - [Compute Engine API](https://pantheon.corp.google.com/apis/library/compute.googleapis.com)
     - [Kubernetes Engine API](https://pantheon.corp.google.com/apis/library/container.googleapis.com)
     - [Identity and Access Management(IAM) API](https://pantheon.corp.google.com/apis/library/iam.googleapis.com)
@@ -73,11 +75,11 @@ Before you follow the instructions below to deploy your own kubeflow cluster, yo
 
 ### Setup Environment
 * Deploy a kubeflow cluster through [CLI](https://www.kubeflow.org/docs/gke/deploy/deploy-cli/)
-    - `NOTE` : The [UI](https://www.kubeflow.org/docs/gke/deploy/deploy-ui/) method of deploying a Kubeflow 
-    cluster does not support Kubeflow v0.7 yet
     - Download and install kfctl
     - Create user credentials
     - Setup environment variables
+    - `NOTE` : The [UI](https://www.kubeflow.org/docs/gke/deploy/deploy-ui/) method of deploying a Kubeflow 
+    cluster does not support Kubeflow v0.7 yet
 
 * Create service account
 ```bash
