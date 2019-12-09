@@ -14,34 +14,40 @@ Docker containers. The `Kubeflow Pipelines` platform consists of:
 
 ## Content Overview:
 In this tutorial, we provided a series of notebooks to demonstrate how to interact with Kubeflow Pipelines with
-[Python SDK](https://github.com/kubeflow/pipelines/tree/master/sdk/python/kfp) through one concrete use case, i.e.,
-[MINIST classification](https://www.tensorflow.org/tutorials/quickstart/beginner).
-- [Kubeflow Cluster Setup](00_Kubeflow_Cluster_Setup.ipynb): this notebook helps you deploy Kubeflow cluster through CLI.
+[Python SDK](https://github.com/kubeflow/pipelines/tree/master/sdk/python/kfp). In particular
+- [00 Kubeflow Cluster Setup](00_Kubeflow_Cluster_Setup.ipynb): this notebook helps you deploy Kubeflow cluster through CLI.
 
-- [Lightweight Python Components](01_Lightweight_Python_Components.ipynb): this notebook demonstrates how to build a component just define a 
-stand-alone python function and then call `kfp.components.func_to_container_op(func)` to convert it to a component that 
-can be used in a pipeline.
+Then, notebooks 01-04 make use of one concrete use case, i.e., 
+[MINIST classification](https://www.tensorflow.org/tutorials/quickstart/beginner), to demonstrate different ways of
+authoring a pipeline component: 
+- [01 Lightweight Python Components](01_Lightweight_Python_Components.ipynb): this notebook demonstrates how to build a 
+component just define a stand-alone python function and then call `kfp.components.func_to_container_op(func)` to 
+convert it to a component that can be used in a pipeline.
 
-- [Local Development with Docker Image Components](02_Local_Development_with_Docker_Image_Components.ipynb): this notebook guides you on creating a pipeline component with
- `kfp.components.ContainerOp` from an existing Docker image which should contain the program to perform the task 
+- [02 Local Development with Docker Image Components](02_Local_Development_with_Docker_Image_Components.ipynb): this 
+notebook guides you on creating a pipeline component with `kfp.components.ContainerOp` from an existing Docker image 
+which should contain the program to perform the task 
  required in a particular step of your ML workflow.
 
-- [Reusable Components](03_Reusable_Components.ipynb): this notebook describes the manual way of writing a full component program (in any language) 
-and a component definition for it. Below is a summary of the steps involved in creating and using a component.
+- [03 Reusable Components](03_Reusable_Components.ipynb): this notebook describes the manual way of writing a full 
+component program (in any language) and a component definition for it. Below is a summary of the steps involved in 
+creating and using a component.
     - Write the program that contains your component’s logic. The program must use files and command-line arguments 
     to pass data to and from the component.
     - Containerize the program.
     - Write a component specification in YAML format that describes the component for the Kubeflow Pipelines system.
     - Use the Kubeflow Pipelines SDK to load your component, use it in a pipeline and run that pipeline.
 
-- [Reusable and Pre-build Components as Pipeline](04_Reusable_and_Pre-build_Components_as_Pipeline.ipynb): this notebook combines our built components together with a 
-pre-build components and a lightweight component to compose a pipeline with three steps.
+- [04 Reusable and Pre-build Components as Pipeline](04_Reusable_and_Pre-build_Components_as_Pipeline.ipynb): this 
+notebook combines our built components together with a pre-build components and a lightweight component to compose a 
+pipeline with three steps.
     - Train a MINIST model and export to GCS
     - Deploy the exported Tensorflow model on AI Platform
     - Test the deployment by calling the end point
 
-- [XGBoost on Spark Pipeline](05_XGboost_on_Spark_Pipeline.ipynb): this notebook demonstrates building a machine learning pipeling with spark and XGBoost. 
-The pipeline
+The last two notebooks make use of pre-build reusable components to build two popular pipelines:
+- [05 XGBoost on Spark Pipeline](05_XGboost_on_Spark_Pipeline.ipynb): this notebook demonstrates building a machine 
+learning pipeling with spark and XGBoost. The pipeline
     - starts by creating an Google DataProc cluster, and then running analysis, transformation, distributed 
     training and prediction in the created cluster.
     - Then a single node confusion-matrix and ROC aggregator is used (for classification case) to provide the confusion 
@@ -50,9 +56,9 @@ The pipeline
     The delete cluster operation is used as an exit handler, meaning it will run regardless of whether 
     the pipeline fails or not.
 
-- [TFX Pipeline from Pre-build Components](06_TFX_Pipeline_from_Pre-build_Components.ipynb): this notebook demonstrates the TFX capabilities at scale. 
-The pipeline uses a public BigQuery dataset and uses GCP services to preprocess data (Dataflow) and train the model 
-(Cloud ML Engine). The model is then deployed to kubeflow for prediction service.
+- [06 TFX Pipeline from Pre-build Components](06_TFX_Pipeline_from_Pre-build_Components.ipynb): this notebook demonstrates 
+the TFX capabilities at scale. The pipeline uses a public BigQuery dataset and uses GCP services to preprocess data 
+(Dataflow) and train the model (Cloud ML Engine). The model is then deployed to Kubeflow for prediction service.
 
 
 ## Setups Overview:
