@@ -15,13 +15,24 @@
 #
 # Submits a Cloud Build job that builds and deploys
 # the pipelines and pipelines components 
+export GOOGLE_APPLICATION_CREDENTIALS=/Users/luoshixin/LocalDevelop/kubeflow-pipeline/kubeflow-pipeline/kubeflow-pipeline-fantasy.json
 
+PROJECT_ID=$(gcloud config get-value core/project)
+
+# Build the base image with kfp-cli
+KFP_IMAGE_NAME=kfp-cli
+TAG=latest
+KFP_IMAGE_URI="gcr.io/${PROJECT_ID}/${KFP_IMAGE_NAME}:${TAG}"
+
+gcloud builds submit --tag ${KFP_IMAGE_URI} .
+
+# Start the CICD pipeline
 SUBSTITUTIONS=\
-_INVERTING_PROXY_HOST=[YOUR_INVERSE_PROXY],\
+_INVERTING_PROXY_HOST=https://7c021d0340d296aa-dot-us-central2.pipelines.googleusercontent.com,\
 _TRAINER_IMAGE_NAME=trainer_image,\
 _BASE_IMAGE_NAME=base_image,\
 TAG_NAME=test,\
-_PIPELINE_FOLDER=lab-13-kfp-cicd/pipeline,\
+_PIPELINE_FOLDER=06_CICD_Pipeline_with_AI_Platform/pipeline,\
 _PIPELINE_DSL=covertype_training_pipeline.py,\
 _PIPELINE_PACKAGE=covertype_training_pipeline.yaml,\
 _PIPELINE_NAME=covertype_training_deployment,\

@@ -2,70 +2,6 @@
 
 In this lab you will walk through authoring of a **Cloud Build** CI/CD workflow that automatically builds and deploys a KFP pipeline. You will also integrate your workflow with **GitHub** by setting up a trigger that starts the  workflow when a new tag is applied to the **GitHub** repo hosting the pipeline's code.
 
-## Lab scenario
-
-This lab uses the KFP DSL and KFP components developed in `lab-12-kfp-pipeline`.
-
-## Lab setup
-
-This lab requires the same setup as `lab-12-kfp-pipeline`. If you completed `lab-12-kfp-pipeline` you are ready to go and you can skip to the **Lab Exercises** section.
-
-### AI Platform Notebook configuration
-Before proceeding with the lab, you must set up the lab environment.
-
-### Lab dataset
-This lab uses the [Covertype Dataset](../datasets/covertype/README.md). The pipeline developed in the lab sources the dataset from BigQuery. Before proceeding with the lab upload the dataset to BigQuery:
-
-1. Open new terminal in you **JupyterLab**
-
-2. Create the BigQuery dataset and upload the Cover Type csv file.
-```
-PROJECT_ID=[YOUR_PROJECT_ID]
-
-DATASET_LOCATION=US
-DATASET_ID=covertype_dataset
-TABLE_ID=covertype
-DATA_SOURCE=gs://workshop-datasets/covertype/full/dataset.csv
-SCHEMA=Elevation:INTEGER,\
-Aspect:INTEGER,\
-Slope:INTEGER,\
-Horizontal_Distance_To_Hydrology:INTEGER,\
-Vertical_Distance_To_Hydrology:INTEGER,\
-Horizontal_Distance_To_Roadways:INTEGER,\
-Hillshade_9am:INTEGER,\
-Hillshade_Noon:INTEGER,\
-Hillshade_3pm:INTEGER,\
-Horizontal_Distance_To_Fire_Points:INTEGER,\
-Wilderness_Area:STRING,\
-Soil_Type:STRING,\
-Cover_Type:INTEGER
-
-bq --location=$DATASET_LOCATION --project_id=$PROJECT_ID mk --dataset $DATASET_ID
-
-bq --project_id=$PROJECT_ID --dataset_id=$DATASET_ID load \
---source_format=CSV \
---skip_leading_rows=1 \
---replace \
-$TABLE_ID \
-$DATA_SOURCE \
-$SCHEMA
-```
-
-## Lab Exercises
-
-During this lab, you will mostly work in a JupyterLab terminal. Before proceeding with the lab exercises configure a set of environment variables that reflect your lab environment. If you used the default settings during the environment setup you don't need to modify the below commands. If you provided custom values for PREFIX, ZONE, or NAMESPACE update the commands accordingly:
-
-```
-export PROJECT_ID=$(gcloud config get-value core/project)
-export PREFIX=$PROJECT_ID
-export ZONE=us-central1-a
-export GKE_CLUSTER_NAME=$PREFIX-cluster
-
-gcloud container clusters get-credentials $GKE_CLUSTER_NAME --zone $ZONE
-export INVERSE_PROXY_HOSTNAME=$(kubectl describe configmap inverse-proxy-config -n $NAMESPACE | grep "googleusercontent.com")
-
-```
-
 Follow the instructor who will walk you through the lab. The high level summary of the lab exercises is as follows.
 
 ###  Authoring the CI/CD workflow that builds and deploys a KFP  pipeline
@@ -82,8 +18,6 @@ The CI/CD workflow automates the steps you walked through manually during `lab-1
 The **Cloud Build** workflow configuration uses both standard and custom [Cloud Build builders](https://cloud.google.com/cloud-build/docs/cloud-builders). The custom builder encapsulates **KFP CLI**. 
 
 *The current version of the lab has been developed and tested with v1.36 of KFP. There is a number of issues with post 1.36 versions of KFP that prevent us from upgrading to the newer version of KFP. KFP v1.36 does not have support for pipeline versions. As an interim measure, the **Cloud Build**  workflow appends `$TAG_NAME` default substitution to the name of the pipeline to designate a pipeline version.*
-
-
 
 
 #### Creating KFP CLI builder
@@ -122,6 +56,7 @@ echo $INVERSE_PROXY_HOSTNAME
 ```
 ./build_pipeline.sh
 ```
+
 ### Setting up GitHub integration
 In this exercise you integrate your CI/CD workflow with **GitHub**, using [Cloud Build GitHub App](https://github.com/marketplace/google-cloud-build). 
 You will set up a trigger that starts the CI/CD workflow when a new tag is applied to the **GitHub** repo managing the KFP pipeline source code. You will use a fork of this repo as your source GitHub repository.
@@ -147,11 +82,11 @@ Use the following values for the substitution variables:
 |_COMPONENT_URL_SEARCH_PREFIX|https://raw.githubusercontent.com/kubeflow/pipelines/0.1.36/components/gcp/|
 |_INVERTING_PROXY_HOST|[Your inverting proxy host]|
 |_PIPELINE_DSL|covertype_training_pipeline.py|
-|_PIPELINE_FOLDER|labs/lab-13-kfp-cicd/pipeline|
+|_PIPELINE_FOLDER|06_CICD_Pipeline_with_AI_Platform/pipeline|
 |_PIPELINE_NAME|covertype_training_deployment|
 |_PIPELINE_PACKAGE|covertype_training_pipeline.yaml|
-|_PYTHON_VERSION|3.5|
-|_RUNTIME_VERSION|1.14|
+|_PYTHON_VERSION|3.7|
+|_RUNTIME_VERSION|1.15|
 |_TRAINER_IMAGE_NAME|trainer_image|
 
 3. In your fork master branch, update the Dockerfile files in the pipeline/base_image and pipeline/trainer_image folders so they get the base image from your Container Registry.
