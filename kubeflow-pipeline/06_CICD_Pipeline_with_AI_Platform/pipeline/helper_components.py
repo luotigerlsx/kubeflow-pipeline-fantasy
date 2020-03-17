@@ -52,8 +52,8 @@ def evaluate_model(
 ) -> NamedTuple('Outputs', [('metric_name', str), ('metric_value', float),
                             ('mlpipeline_metrics', 'Metrics')]):
     """Evaluates a trained sklearn model."""
-    # import joblib
-    import pickle
+    import joblib
+    #     import pickle
     import json
     import pandas as pd
     import subprocess
@@ -68,7 +68,7 @@ def evaluate_model(
     y_test = df_test['Cover_Type']
 
     # Copy the model from GCS
-    model_filename = 'model.pkl'
+    model_filename = 'model.joblib'
     gcs_model_filepath = '{}/{}'.format(model_path, model_filename)
     print(gcs_model_filepath)
 
@@ -76,11 +76,9 @@ def evaluate_model(
         gfile.Remove(model_filename)
 
     gfile.Copy(gcs_model_filepath, model_filename)
-    #     subprocess.check_call(['gsutil', 'cp', gcs_model_filepath, model_filename],
-    #                         stderr=sys.stdout)
 
     with open(model_filename, 'rb') as model_file:
-        model = pickle.load(model_file)
+        model = joblib.load(model_file)
 
     y_hat = model.predict(X_test)
 
@@ -100,4 +98,4 @@ def evaluate_model(
         }]
     }
 
-    return (metric_name, metric_value, json.dumps(metrics))
+    return metric_name, metric_value, json.dumps(metrics)

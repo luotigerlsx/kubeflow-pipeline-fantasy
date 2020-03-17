@@ -1,0 +1,6 @@
+fire
+cloudml-hypertune
+pandas
+google-api-python-client
+gcsfs
+scikit-learn==0.20.2

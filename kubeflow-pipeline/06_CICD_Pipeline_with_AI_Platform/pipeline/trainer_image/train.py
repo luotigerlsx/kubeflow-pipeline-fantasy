@@ -3,9 +3,9 @@ import subprocess
 import sys
 
 import fire
-import pickle
 import numpy as np
 import pandas as pd
+import joblib
 
 import hypertune
 
@@ -63,17 +63,15 @@ def train_evaluate(job_dir, training_dataset_path, validation_dataset_path, alph
     # Save the model
     if not hptune:
         from tensorflow import gfile
-        model_filename = 'model.pkl'
-        with open(model_filename, 'wb') as model_file:
-            pickle.dump(pipeline, model_file)
+        model_filename = 'model.joblib'
         gcs_model_path = "{}/{}".format(job_dir, model_filename)
-
+        
         if gfile.Exists(gcs_model_path):
             gfile.Remove(gcs_model_path)
-
-        gfile.Copy(model_filename, gcs_model_path)
         
-#         subprocess.check_call(['gsutil', 'cp', model_filename, gcs_model_path], stderr=sys.stdout)
+        with gfile.Open(gcs_model_path, 'w') as wf:
+            joblib.dump(pipeline, wf)
+        
         print("Saved model in: {}".format(gcs_model_path)) 
     
 if __name__ == "__main__":

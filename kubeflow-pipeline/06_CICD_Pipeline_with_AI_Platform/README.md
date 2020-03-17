@@ -85,8 +85,8 @@ Use the following values for the substitution variables:
 |_PIPELINE_FOLDER|06_CICD_Pipeline_with_AI_Platform/pipeline|
 |_PIPELINE_NAME|covertype_training_deployment|
 |_PIPELINE_PACKAGE|covertype_training_pipeline.yaml|
-|_PYTHON_VERSION|3.7|
-|_RUNTIME_VERSION|1.15|
+|_PYTHON_VERSION|3.5|
+|_RUNTIME_VERSION|1.14|
 |_TRAINER_IMAGE_NAME|trainer_image|
 
 3. In your fork master branch, update the Dockerfile files in the pipeline/base_image and pipeline/trainer_image folders so they get the base image from your Container Registry.

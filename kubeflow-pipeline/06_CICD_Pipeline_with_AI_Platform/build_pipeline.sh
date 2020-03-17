@@ -27,8 +27,11 @@ KFP_IMAGE_URI="gcr.io/${PROJECT_ID}/${KFP_IMAGE_NAME}:${TAG}"
 gcloud builds submit --tag ${KFP_IMAGE_URI} .
 
 # Start the CICD pipeline
+# Currently this only works for kubeflow deployment without IAP
+# Or kubeflow pipeline deployment with inverse_proxy. Because kfp-cli sdk
+# cannot handle iap quietly.
 SUBSTITUTIONS=\
-_INVERTING_PROXY_HOST=https://7c021d0340d296aa-dot-us-central2.pipelines.googleusercontent.com,\
+_INVERTING_PROXY_HOST=https://kubeflow-st-ui.endpoints.kubeflow-pipeline-fantasy.cloud.goog/pipeline,\
 _TRAINER_IMAGE_NAME=trainer_image,\
 _BASE_IMAGE_NAME=base_image,\
 TAG_NAME=test,\
