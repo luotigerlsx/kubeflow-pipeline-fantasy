@@ -2,7 +2,6 @@ import os
 import subprocess
 import sys
 
-import fire
 import numpy as np
 import pandas as pd
 import pickle
@@ -12,18 +11,21 @@ from sklearn.compose import ColumnTransformer
 from sklearn.linear_model import SGDClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
+# from sklearn.externals import joblib
 
+import joblib
 from tensorflow import gfile
+
 
 def train_evaluate(job_dir, training_dataset_path, validation_dataset_path,
                    alpha, max_iter, hptune):
     with gfile.Open(training_dataset_path, 'r') as f:
         # Assume there is no header
-        df_train = pd.read_csv(f)
+        df_train = pd.read_csv(f, nrows=1000)
 
     with gfile.Open(validation_dataset_path, 'r') as f:
         # Assume there is no header
-        df_validation = pd.read_csv(f)
+        df_validation = pd.read_csv(f, nrows=100)
 
     if not hptune:
         df_train = pd.concat([df_train, df_validation])
@@ -79,6 +81,14 @@ def train_evaluate(job_dir, training_dataset_path, validation_dataset_path,
             pickle.dump(pipeline, wf)
 
         print("Saved model in: {}".format(gcs_model_path))
-    
+
+
 if __name__ == "__main__":
-    fire.Fire(train_evaluate)
+    train_evaluate(
+        job_dir='../tmp',
+        training_dataset_path='gs://kubeflow-pipeline-ui/staging/datasets/training/data.csv',
+        validation_dataset_path='gs://kubeflow-pipeline-ui/staging/datasets/validation/data.csv',
+        alpha=0.001,
+        max_iter=1000,
+        hptune=False
+    )

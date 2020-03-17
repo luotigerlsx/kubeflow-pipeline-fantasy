@@ -20,11 +20,11 @@ export GOOGLE_APPLICATION_CREDENTIALS=/Users/luoshixin/LocalDevelop/kubeflow-pip
 PROJECT_ID=$(gcloud config get-value core/project)
 
 # Build the base image with kfp-cli
-KFP_IMAGE_NAME=kfp-cli
-TAG=latest
-KFP_IMAGE_URI="gcr.io/${PROJECT_ID}/${KFP_IMAGE_NAME}:${TAG}"
-
-gcloud builds submit --tag ${KFP_IMAGE_URI} .
+#KFP_IMAGE_NAME=kfp-cli
+#TAG=latest
+#KFP_IMAGE_URI="gcr.io/${PROJECT_ID}/${KFP_IMAGE_NAME}:${TAG}"
+#
+#gcloud builds submit --tag ${KFP_IMAGE_URI} .
 
 # Start the CICD pipeline
 # Currently this only works for kubeflow deployment without IAP
