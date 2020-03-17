@@ -68,7 +68,7 @@ def evaluate_model(
     y_test = df_test['Cover_Type']
 
     # Copy the model from GCS
-    model_filename = 'model.joblib'
+    model_filename = 'model.pkl'
     gcs_model_filepath = '{}/{}'.format(model_path, model_filename)
     print(gcs_model_filepath)
 

@@ -49,7 +49,10 @@ steps:
   args:
   - '-c'
   - |
-    kfp --endpoint $_INVERTING_PROXY_HOST --iap-client-id 493831447550-os23o55235htd9v45a9lsejv8d1plhd0.apps.googleusercontent.com pipeline upload -p ${_PIPELINE_NAME}_$TAG_NAME $_PIPELINE_PACKAGE
+    kfp \
+      --endpoint $_INVERTING_PROXY_HOST \
+      --iap-client-id 493831447550-os23o55235htd9v45a9lsejv8d1plhd0.apps.googleusercontent.com \
+      pipeline upload -p ${_PIPELINE_NAME}_$TAG_NAME $_PIPELINE_PACKAGE
   dir: $_PIPELINE_FOLDER
 
 
