@@ -3,4 +3,5 @@ cloudml-hypertune
 pandas
 google-api-python-client
 gcsfs
+joblib
 scikit-learn==0.20.2
