@@ -64,8 +64,7 @@ def _gzip_reader_fn(filenames):
 def _build_estimator(config,
                      numeric_feature_keys,
                      categorical_feature_keys,
-                     hidden_units,
-                     warm_start_from=None):
+                     hidden_units):
     """Build an estimator for predicting forest cover based on cartographic data."""
 
     num_feature_columns = [
@@ -82,8 +81,7 @@ def _build_estimator(config,
         n_classes=NUM_CLASSES,
         linear_feature_columns=categorical_feature_columns,
         dnn_feature_columns=num_feature_columns,
-        dnn_hidden_units=hidden_units or [100, 70, 50, 25],
-        warm_start_from=warm_start_from)
+        dnn_hidden_units=hidden_units or [100, 70, 50, 25])
 
 
 def _input_fn(filenames, feature_specs, label_key, batch_size=200):
@@ -232,8 +230,7 @@ def trainer_fn(hparams, schema):
         hidden_units=hidden_units,
         numeric_feature_keys=transformed_numeric_feature_keys,
         categorical_feature_keys=transformed_categorical_feature_keys,
-        config=run_config,
-        warm_start_from=hparams.warm_start_from)
+        config=run_config)
 
     # Create an input receiver for TFMA processing
     receiver_fn = lambda: _eval_input_receiver_fn(tf_transform_output, schema,

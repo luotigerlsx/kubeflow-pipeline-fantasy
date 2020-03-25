@@ -30,15 +30,13 @@ TFX_IMAGE_NAME=tfx-kubeflow
 TAG=latest
 export KUBEFLOW_TFX_IMAGE="gcr.io/${PROJECT_ID}/${TFX_IMAGE_NAME}:${TAG}"
 
-#gcloud builds submit --tag ${TFX_IMAGE} .
+gcloud builds submit --tag ${KUBEFLOW_TFX_IMAGE} .
 
 export PIPELINE_NAME=tfx_covertype_classifier_training
 export RUNTIME_VERSION=1.15
 export PYTHON_VERSION=3.7
 
 python pipeline_dsl.py
-
-#CUSTOM_TFX_IMAGE=gcr.io/${PROJECT_ID}/tfx-pipeline
 
 #HOST_PATH=https://7c021d0340d296aa-dot-us-central2.pipelines.googleusercontent.com
 #tfx pipeline create \
