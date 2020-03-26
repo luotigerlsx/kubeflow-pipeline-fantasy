@@ -28,7 +28,7 @@ export DATA_ROOT_URI=gs://kubeflow-pipeline-ui/cover_type_data
 TFX_IMAGE_NAME=tfx-kubeflow
 TAG=latest
 export KUBEFLOW_TFX_IMAGE="gcr.io/${PROJECT_ID}/${TFX_IMAGE_NAME}:${TAG}"
-#gcloud builds submit --tag ${KUBEFLOW_TFX_IMAGE} .
+gcloud builds submit --tag ${KUBEFLOW_TFX_IMAGE} .
 
 export PIPELINE_NAME=tfx_covertype_classifier_training
 export RUNTIME_VERSION=1.15

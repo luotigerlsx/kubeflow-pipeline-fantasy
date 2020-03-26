@@ -22,6 +22,7 @@ from tfx.components.base import executor_spec
 from tfx.components.evaluator.component import Evaluator
 from tfx.components.example_gen.csv_example_gen.component import CsvExampleGen
 from tfx.components.example_validator.component import ExampleValidator
+from tfx.components.model_validator.component import ModelValidator
 from tfx.components.pusher.component import Pusher
 from tfx.components.schema_gen.component import SchemaGen
 from tfx.components.statistics_gen.component import StatisticsGen
@@ -38,8 +39,11 @@ from tfx.orchestration.kubeflow import kubeflow_dag_runner
 
 from tfx.proto import evaluator_pb2
 from tfx.proto import trainer_pb2
+from tfx.proto import pusher_pb2
 
 from tfx.utils.dsl_utils import external_input
+
+import tensorflow_model_analysis as tfma
 
 
 def _create__pipeline(pipeline_name: Text,
@@ -84,24 +88,70 @@ def _create__pipeline(pipeline_name: Text,
         transform_graph=transform.outputs.transform_output,
         train_args=trainer_pb2.TrainArgs(num_steps=10000),
         eval_args=trainer_pb2.EvalArgs(num_steps=5000),
-        custom_config={'ai_platform_training_args': ai_platform_training_args})
+        custom_config={ai_platform_trainer_executor.TRAINING_ARGS_KEY:
+                           ai_platform_training_args})
 
     # Uses TFMA to compute a evaluation statistics over features of a model.
+    
+    eval_config = tfma.EvalConfig(
+        model_specs=[
+            # This assumes a serving model with signature 'serving_default'. If
+            # using estimator based EvalSavedModel, add signature_name='eval' and
+            # remove the label_key. Note, if using a TFLite model, then you must set
+            # model_type='tf_lite'.
+            tfma.ModelSpec(signature_name='eval')
+        ],
+        metrics_specs=[
+            tfma.MetricsSpec(
+                # The metrics added here are in addition to those saved with the
+                # model (assuming either a keras model or EvalSavedModel is used).
+                # Any metrics added into the saved model (for example using
+                # model.compile(..., metrics=[...]), etc) will be computed
+                # automatically.
+                # metrics=[
+                #     tfma.MetricConfig(class_name='ExampleCount')
+                # ],
+                # To add validation thresholds for metrics saved with the model,
+                # add them keyed by metric name to the thresholds map.
+                thresholds={
+                    "accuracy": tfma.MetricThreshold(
+                        value_threshold=tfma.GenericValueThreshold(
+                            lower_bound={'value': 0.1}),
+                        change_threshold=tfma.GenericChangeThreshold(
+                            direction=tfma.MetricDirection.HIGHER_IS_BETTER,
+                            absolute={'value': -1e-10}))
+                }
+            )
+        ],
+        slicing_specs=[
+            # An empty slice spec means the overall slice, i.e. the whole dataset.
+            tfma.SlicingSpec(),
+            # Data can be sliced along a feature column. In this case, data is
+            # sliced along feature column trip_start_hour.
+            tfma.SlicingSpec(feature_keys=['weekday'])
+        ])
+
     model_analyzer = Evaluator(
         examples=example_gen.outputs.examples,
         model=trainer.outputs.output,
-        feature_slicing_spec=evaluator_pb2.FeatureSlicingSpec(specs=[
-            evaluator_pb2.SingleSlicingSpec(column_for_slicing=['weekday'])
-        ]))
+        eval_config=eval_config)
+
+    # Performs quality validation of a candidate model (compared to a baseline).
+    # model_validator = ModelValidator(
+    #     examples=example_gen.outputs.examples, model=trainer.outputs.output)
 
     # Checks whether the model passed the validation steps and pushes the model
     # to a file destination if check passed.
     pusher = Pusher(
-        custom_executor_spec=executor_spec.ExecutorClassSpec(
-            ai_platform_pusher_executor.Executor),
         model=trainer.outputs.output,
         model_blessing=model_analyzer.outputs.blessing,
-        custom_config={'ai_platform_serving_args': ai_platform_serving_args})
+        push_destination=pusher_pb2.PushDestination(
+            filesystem=pusher_pb2.PushDestination.Filesystem(
+                base_directory=os.path.join(pipeline_root, 'serving_model'))),
+        custom_executor_spec=executor_spec.ExecutorClassSpec(
+            ai_platform_pusher_executor.Executor),
+        custom_config={ai_platform_pusher_executor.SERVING_ARGS_KEY:
+                           ai_platform_serving_args})
 
     return pipeline.Pipeline(
         pipeline_name=pipeline_name,
