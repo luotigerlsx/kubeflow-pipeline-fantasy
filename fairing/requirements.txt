@@ -1,7 +1,10 @@
 pandas
+gcsfs
 joblib
 numpy
-xgboost
-sklearn
+tensorflow==1.15.2
 seldon-core
-tensorflow
+xgboost==0.82
+scikit-learn>=0.21.0,<0.22
+tornado>=6.0.3
+cloudpickle==1.1.1

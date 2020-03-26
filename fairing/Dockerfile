@@ -1,5 +1,4 @@
-ARG PY_VERSION="3.6.7"
-FROM python:${PY_VERSION}
+FROM python:3.6.7
 
 # Install google cloud sdk
 RUN wget -nv \
