@@ -3,7 +3,7 @@
 # gitignore template for Jupyter Notebooks
 # website: http://jupyter.org/
 
-.ipynb_checkpoints
+kubeflow-pipeline/.ipynb_checkpoints
 */.ipynb_checkpoints/*
 
 # IPython
@@ -154,5 +154,13 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
+# Pycharm
+*.DS_Store
+.idea
+
+# project specific
 *.json
-.DS_Store
+tmp/
+kubeflow-pipeline/kubeflow/
+kubeflow-pipeline/artifact-store/
+kubeflow-pipeline/tfx-covertype/

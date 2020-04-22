@@ -47,7 +47,7 @@ and a lightweight component to compose a pipeline with three steps.
     - Test the deployment by calling the end point with test data
 
 The last two notebooks make use of pre-build reusable components to build two popular pipelines:
-- [05 XGBoost on Spark Pipeline](05_XGboost_on_Spark_Pipeline.ipynb): this notebook demonstrates building a machine 
+- [05 XGBoost on Spark Pipeline](0X_Prebuild_Components/0X_XGboost_on_Spark_Pipeline.ipynb): this notebook demonstrates building a machine 
 learning pipeling with spark and XGBoost. The pipeline
     - starts by creating an Google DataProc cluster, and then running analysis, transformation, distributed 
     training and prediction in the created cluster.
@@ -57,7 +57,7 @@ learning pipeling with spark and XGBoost. The pipeline
     The delete cluster operation is used as an exit handler, meaning it will run regardless of whether 
     the pipeline fails or not.
 
-- [06 TFX Pipeline from Pre-build Components](06_TFX_Pipeline_from_Pre-build_Components.ipynb): this notebook demonstrates 
+- [06 TFX Pipeline from Pre-build Components](0X_Prebuild_Components/0X_TFX_Pipeline_from_Pre-build_Components.ipynb): this notebook demonstrates 
 the TFX capabilities at scale. The pipeline uses a public BigQuery dataset and uses GCP services to preprocess data 
 (Dataflow) and train the model (Cloud ML Engine). The model is then deployed to Kubeflow for prediction service.
 
