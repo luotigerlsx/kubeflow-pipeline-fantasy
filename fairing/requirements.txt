@@ -2,7 +2,7 @@ pandas
 gcsfs
 joblib
 numpy
-tensorflow==1.15.2
+tensorflow==1.15.4
 seldon-core
 xgboost==0.82
 scikit-learn>=0.21.0,<0.22
