@@ -85,7 +85,6 @@ def generate_sampling_query(source_table_name, num_lots, lots):
 
 
 # Create component factories
-# Create component factories
 component_store = kfp.components.ComponentStore(
     local_search_paths=None, url_search_prefixes=[COMPONENT_URL_SEARCH_PREFIX])
 
@@ -217,5 +216,4 @@ def covertype_train(project_id: GCPProjectID,
             python_version=PYTHON_VERSION,
             replace_existing_version=replace_existing_version)
 
-    kfp.dsl.get_pipeline_conf().add_op_transformer(
-        use_gcp_secret('user-gcp-sa'))
+    kfp.dsl.get_pipeline_conf()
