@@ -15,22 +15,22 @@ for data preprocessing, data transformation, model training, and so on.
 ## Content Overview:
 In this tutorial, we designed a series of notebooks to demonstrate how to interact with `Kubeflow Pipelines` through
 [Python SDK](https://github.com/kubeflow/pipelines/tree/master/sdk/python/kfp). In particular
-- [00 Kubeflow Cluster Setup](00_Kubeflow_Cluster_Setup.ipynb): this notebook helps you deploy a Kubeflow 
+- [Kubeflow Cluster Setup](00_Kubeflow_Cluster_Setup.ipynb): this notebook helps you deploy a Kubeflow 
 cluster through CLI. The [UI](https://www.kubeflow.org/docs/gke/deploy/deploy-ui/) method of deploying a Kubeflow 
 cluster does not support Kubeflow v0.7 yet.
 
 Then, notebooks 01-04 use one concrete use case, i.e., 
 [MINIST classification](https://www.tensorflow.org/tutorials/quickstart/beginner), to demonstrate different ways of
 authoring a pipeline component: 
-- [01 Lightweight Python Components](01_Lightweight_Python_Components.ipynb): this notebook demonstrates how to build a 
+- [Lightweight Python Components](01_Kubeflow_Pipeline_Basics/01_Lightweight_Python_Components.ipynb): this notebook demonstrates how to build a 
 component through defining a stand-alone python function and then calling `kfp.components.func_to_container_op(func)` to 
 convert, which can be used in a pipeline.
 
-- [02 Local Development with Docker Image Components](02_Local_Development_with_Docker_Image_Components.ipynb): this 
+- [Local Development with Docker Image Components](01_Kubeflow_Pipeline_Basics/02_Local_Development_with_Docker_Image_Components.ipynb): this 
 notebook guides you on creating a pipeline component with `kfp.components.ContainerOp` from an existing Docker image 
 which should contain the program to perform the task required in a particular step of your ML workflow.
 
-- [03 Reusable Components](03_Reusable_Components.ipynb): this notebook describes the manual way of writing a full 
+- [Reusable Components](01_Kubeflow_Pipeline_Basics/03_Reusable_Components.ipynb): this notebook describes the manual way of writing a full 
 component program (in any language) and a component definition for it. Below is a summary of the steps involved in 
 creating and using a component.
     - Write the program that contains your component’s logic. The program must use files and command-line arguments 
@@ -39,7 +39,7 @@ creating and using a component.
     - Write a component specification in YAML format that describes the component for the Kubeflow Pipelines system.
     - Use the Kubeflow Pipelines SDK to load your component, use it in a pipeline and run that pipeline.
 
-- [04 Reusable and Pre-build Components as Pipeline](04_Reusable_and_Pre-build_Components_as_Pipeline.ipynb): this 
+- [Reusable and Pre-build Components as Pipeline](01_Kubeflow_Pipeline_Basics/04_Reusable_and_Pre-build_Components_as_Pipeline.ipynb): this 
 notebook combines our built components, together with a pre-build GCP AI Platform components 
 and a lightweight component to compose a pipeline with three steps.
     - Train a MINIST model and export it to GCS
@@ -47,7 +47,7 @@ and a lightweight component to compose a pipeline with three steps.
     - Test the deployment by calling the end point with test data
 
 We have also put together some more examples to demonstrate
-- [Pipeline with AI Platform and GCP Service](05_Pipeline_with_AI_Platform_and_GCP_Service.ipynb): this notebook demonstrates orchestrating model training and deployment with Kubeflow Pipelines (KFP) and Cloud AI Platform. In particular, you will develop, deploy, and run a KFP pipeline that orchestrates BigQuery and Cloud AI Platform services to train a scikit-learn model. The pipeline uses:
+- [Pipeline with AI Platform and GCP Service](02_Kubeflow_Pipeline_Examples/Pipeline_with_AI_Platform_and_GCP_Service.ipynb): this notebook demonstrates orchestrating model training and deployment with Kubeflow Pipelines (KFP) and Cloud AI Platform. In particular, you will develop, deploy, and run a KFP pipeline that orchestrates BigQuery and Cloud AI Platform services to train a scikit-learn model. The pipeline uses:
     - Pre-build components. The pipeline uses the following pre-build components that are included with KFP distribution:
         - [BigQuery query component](https://github.com/kubeflow/pipelines/tree/0.1.36/components/gcp/bigquery/query)
         - [AI Platform Training component](https://github.com/kubeflow/pipelines/tree/0.1.36/components/gcp/ml_engine/train)
@@ -58,9 +58,9 @@ We have also put together some more examples to demonstrate
         the pipeline fails or not.
 
 - TFX Pipeline with AI Platform
-    - [TFX Interactive Walkthrough](06_TFX_Interactive_Walkthrough.ipynb)
-    - [TFX (Estimator) and Kubeflow Pipeline](06_TFX_Kubeflow_Pipeline)
-    - [TFX (Keras) and Kubeflow Pipeline](06_TFX_Keras_Kubeflow_Pipeline)
+    - [TFX Interactive Walkthrough](03_TFX_Kubeflow_Pipeline/TFX_Interactive_Walkthrough.ipynb)
+    - [TFX (Estimator) and Kubeflow Pipeline](03_TFX_Kubeflow_Pipeline/TFX_Estimator_Kubeflow_Pipeline)
+    - [TFX (Keras) and Kubeflow Pipeline](03_TFX_Kubeflow_Pipeline/TFX_Keras_Kubeflow_Pipeline)
 
 
 ## Setups Overview:
@@ -248,4 +248,5 @@ mlengine_deploy_op = comp.load_component_from_url(
 
 ## Contributors
 - [Shixin Luo](https://github.com/luotigerlsx)
+- [Tommy Siu](https://github.com/tommysiu)
 - [Kumar Saurabh](https://github.com/saurabh24292)
