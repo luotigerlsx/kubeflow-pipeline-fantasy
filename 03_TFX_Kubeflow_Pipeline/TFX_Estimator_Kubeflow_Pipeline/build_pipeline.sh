@@ -17,13 +17,12 @@
 # the pipelines and pipelines components 
 # export GOOGLE_APPLICATION_CREDENTIALS=../config/kubeflow-pipeline-fantasy.json
 
-export PROJECT_ID=pttep-kfp-tutorial
+export PROJECT_ID=kubeflow-pipeline-fantasy
 PREFIX=$PROJECT_ID
-YOUR_LDAP=#TODO
-export ARTIFACT_STORE_URI=gs://pttep-kfp-tutorial/$YOUR_LDAP/$PREFIX-artifact-store
+export ARTIFACT_STORE_URI=gs://kubeflow-pipeline-ui/$PREFIX-artifact-store
 
 export GCS_STAGING_PATH=${ARTIFACT_STORE_URI}/staging
-export DATA_ROOT_URI=gs://pttep-kfp-tutorial/cover_type_data
+export DATA_ROOT_URI=gs://kubeflow-pipeline-ui/cover_type_data
 
 # build the base image for tfx component running
 TFX_IMAGE_NAME=tfx-kubeflow

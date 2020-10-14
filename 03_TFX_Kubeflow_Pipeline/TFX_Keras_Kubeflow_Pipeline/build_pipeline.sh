@@ -15,7 +15,7 @@
 #
 # Submits a Cloud Build job that builds and deploys
 # the pipelines and pipelines components 
-export GOOGLE_APPLICATION_CREDENTIALS=../config/kubeflow-pipeline-fantasy.json
+# export GOOGLE_APPLICATION_CREDENTIALS=../config/kubeflow-pipeline-fantasy.json
 
 export PROJECT_ID=kubeflow-pipeline-fantasy
 PREFIX=$PROJECT_ID
@@ -37,14 +37,3 @@ export GCP_REGION=us-central1
 export ZONE=us-central1-a
 
 python pipeline_dsl.py
-
-#HOST_PATH=https://kubeflow-st-ui.endpoints.kubeflow-pipeline-fantasy.cloud.goog/pipeline
-#CLIENT_ID=493831447550-os23o55235htd9v45a9lsejv8d1plhd0.apps.googleusercontent.com
-#tfx pipeline create \
-#  --engine kubeflow \
-#  --pipeline_path pipeline_dsl.py \
-#  --endpoint $HOST_PATH \
-#  --iap_client_id $CLIENT_ID
-
-#tfx run create --pipeline_name tfx_covertype_classifier_training --endpoint $HOST_PATH
-#tfx run list --pipeline_name tfx_covertype_classifier_training --endpoint $HOST_PATH
