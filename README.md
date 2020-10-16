@@ -1,5 +1,5 @@
 # Kubeflow Pipeline Tutorial 
-[`Kubeflow Pipelines`](https://github.com/kubeflow/pipelines) is a platform for building and deploying portable, scalable machine learning (ML) pipelines or 
+[Kubeflow Pipelines](https://github.com/kubeflow/pipelines) is a platform for building and deploying portable, scalable machine learning (ML) pipelines or 
 workflows based on Docker containers. The `Kubeflow Pipelines` platform consists of:
 - A user interface for managing and tracking experiments, jobs, and runs.
 - An engine for scheduling multi-step ML workflows.
@@ -13,54 +13,22 @@ code, packaged as a Docker image, that performs one step in the pipeline. For ex
 for data preprocessing, data transformation, model training, and so on. 
 
 ## Content Overview:
-In this tutorial, we designed a series of notebooks to demonstrate how to interact with `Kubeflow Pipelines` through
-[Python SDK](https://github.com/kubeflow/pipelines/tree/master/sdk/python/kfp). In particular
-- [Kubeflow Cluster Setup](00_Kubeflow_Cluster_Setup.ipynb): this notebook helps you deploy a Kubeflow 
-cluster through CLI. The [UI](https://www.kubeflow.org/docs/gke/deploy/deploy-ui/) method of deploying a Kubeflow 
-cluster does not support Kubeflow v0.7 yet.
-
-Then, notebooks 01-04 use one concrete use case, i.e., 
-[MINIST classification](https://www.tensorflow.org/tutorials/quickstart/beginner), to demonstrate different ways of
-authoring a pipeline component: 
-- [Lightweight Python Components](01_Kubeflow_Pipeline_Basics/01_Lightweight_Python_Components.ipynb): this notebook demonstrates how to build a 
-component through defining a stand-alone python function and then calling `kfp.components.func_to_container_op(func)` to 
-convert, which can be used in a pipeline.
-
-- [Local Development with Docker Image Components](01_Kubeflow_Pipeline_Basics/02_Local_Development_with_Docker_Image_Components.ipynb): this 
-notebook guides you on creating a pipeline component with `kfp.components.ContainerOp` from an existing Docker image 
-which should contain the program to perform the task required in a particular step of your ML workflow.
-
-- [Reusable Components](01_Kubeflow_Pipeline_Basics/03_Reusable_Components.ipynb): this notebook describes the manual way of writing a full 
-component program (in any language) and a component definition for it. Below is a summary of the steps involved in 
-creating and using a component.
-    - Write the program that contains your component’s logic. The program must use files and command-line arguments 
-    to pass data to and from the component.
-    - Containerize the program.
-    - Write a component specification in YAML format that describes the component for the Kubeflow Pipelines system.
-    - Use the Kubeflow Pipelines SDK to load your component, use it in a pipeline and run that pipeline.
-
-- [Reusable and Pre-build Components as Pipeline](01_Kubeflow_Pipeline_Basics/04_Reusable_and_Pre-build_Components_as_Pipeline.ipynb): this 
-notebook combines our built components, together with a pre-build GCP AI Platform components 
-and a lightweight component to compose a pipeline with three steps.
-    - Train a MINIST model and export it to GCS
-    - Deploy the exported Tensorflow model on AI Platform prediction service
-    - Test the deployment by calling the end point with test data
-
-We have also put together some more examples to demonstrate
-- [Pipeline with AI Platform and GCP Service](02_Kubeflow_Pipeline_Examples/Pipeline_with_AI_Platform_and_GCP_Service.ipynb): this notebook demonstrates orchestrating model training and deployment with Kubeflow Pipelines (KFP) and Cloud AI Platform. In particular, you will develop, deploy, and run a KFP pipeline that orchestrates BigQuery and Cloud AI Platform services to train a scikit-learn model. The pipeline uses:
-    - Pre-build components. The pipeline uses the following pre-build components that are included with KFP distribution:
-        - [BigQuery query component](https://github.com/kubeflow/pipelines/tree/0.1.36/components/gcp/bigquery/query)
-        - [AI Platform Training component](https://github.com/kubeflow/pipelines/tree/0.1.36/components/gcp/ml_engine/train)
-        - [AI Platform Deploy component](https://github.com/kubeflow/pipelines/tree/0.1.36/components/gcp/ml_engine/deploy)
-    - Custom components. The pipeline uses two custom helper components that encapsulate functionality not available in any of the pre-build components. The components are implemented using the KFP SDK's [Lightweight Python Components](https://www.kubeflow.org/docs/pipelines/sdk/lightweight-python-components/) mechanism. The code for the components is in the `helper_components.py` file:
-        - **Retrieve Best Run**. This component retrieves the tuning metric and hyperparameter values for the best run of the AI Platform Training hyperparameter tuning job.
-        - **Evaluate Model**. This component evaluates the *sklearn* trained model using a provided metric and a testing dataset. 
-        the pipeline fails or not.
-
-- TFX Pipeline with AI Platform
-    - [TFX Interactive Walkthrough](03_TFX_Kubeflow_Pipeline/TFX_Interactive_Walkthrough.ipynb)
-    - [TFX (Estimator) and Kubeflow Pipeline](03_TFX_Kubeflow_Pipeline/TFX_Estimator_Kubeflow_Pipeline)
-    - [TFX (Keras) and Kubeflow Pipeline](03_TFX_Kubeflow_Pipeline/TFX_Keras_Kubeflow_Pipeline)
+In this repository, we designed a series of notebooks to demonstrate and guide you from basics to advance usage of `Kubeflow Pipelines` through
+[Python SDK](https://github.com/kubeflow/pipelines/tree/master/sdk/python/kfp). The contents have been grouped into four folders
+- [Kubeflow Pipeline Basics](01_Kubeflow_Pipeline_Basics): One concrete use case, i.e., 
+[MNIST classification](https://www.tensorflow.org/tutorials/quickstart/beginner), is used to demonstrate various ways of
+authoring a pipeline component aiming for different stages of development;
+- [Kubeflow Pipeline Examples](02_Kubeflow_Pipeline_Examples): Complete pipeline examples with combinations of pre-built
+and customised components running on various GCP AI and Analytical services;
+- [Kubeflow Pipeline TFX](03_Kubeflow_Pipeline_TFX): TFX is a platform for building and managing ML workflows in a production environment, which
+can be orchestrated by Kubeflow Pipeline. Notebooks are provided to demonstrate the basic usage of TFX, and complete samples pipelines
+are also provided for reference;
+- [Kubeflow Pipeline CI/CD Examples](04_Kubeflow_Pipeline_CICD_Examples): MLOps is an ML engineering culture and practice that aims at unifying ML 
+development (Dev) and ML operation (Ops). MLOps strongly advocates automation and monitoring at all steps of ML system construction, from integration, testing, 
+and releasing to deployment and infrastructure management. CI/CD examples together with Kubeflow Pipeline are provided here.
+ 
+Moreover, we have also developed [Kubeflow Cluster Setup](00_Kubeflow_Cluster_Setup.ipynb) notebook to help you deploy a Kubeflow 
+deployment through CLI. (The currently version is designed based on kfp 0.7).
 
 
 ## Setups Overview:
@@ -86,8 +54,6 @@ for the project and with the following APIs enabled:
     - Download and install kfctl
     - Create user credentials
     - Setup environment variables
-    - `NOTE` : The [UI](https://www.kubeflow.org/docs/gke/deploy/deploy-ui/) method of deploying a Kubeflow 
-    cluster does not support Kubeflow v0.7 yet
 
 * Create service account
 ```bash
@@ -105,7 +71,7 @@ gcloud iam service-accounts keys create ~/key.json \
 pip3 install kfp --upgrade --user
 ```
 
-* Deploy kubefow
+* Deploy kubeflow
 ```bash
 mkdir -p ${KF_DIR}
 cd $kf_dir
@@ -119,14 +85,14 @@ And the examples demonstrated are fully tested on notebook service for the follo
 - Essentially notebook on any environment outside Kubeflow cluster
  
 For notebook running inside Kubeflow cluster, for example JupytHub will be deployed together with kubeflow, the 
-environemt variables, e.g. service account, projects and etc, should have been pre-configured while 
+environment variables, e.g. service account, projects and etc, should have been pre-configured while 
 setting up the cluster.
 
-## Regional Artifact Registry
+### Regional Artifact Registry
 [Artifact Registry](https://cloud.google.com/artifact-registry)
 is a single place for your organization to manage container images and language packages (such as Maven and npm). It is fully integrated with Google Cloud’s tooling and runtimes and comes with support for native artifact protocols. More importantly, it supports regional and multi-regional repositories.
 
-### The steps to create regional Docker repository in Artifact Registry are as follows
+#### The steps to create regional Docker repository in Artifact Registry are as follows
 
 - Run the following command to create a new Docker repository named `AF_REGISTRY_NAME` in the location `AF_REGISTRY_LOCATION` with the description "Regional Docker repository". The regional Artifact Registry supports quite a number of regions, e.g., Hong Kong, Taiwan, Singapore, Tokyo in Asia.
 
@@ -153,38 +119,7 @@ and the image full uri typically will be
 {AF_REGISTRY_LOCATION}-docker.pkg.dev/{PROJECT_ID}/{AF_REGISTRY_NAME}/{IMAGE_NAME}:{TAG}
 ```
 
-## Regional Container Registry
-[Artifact Registry](https://cloud.google.com/artifact-registry)
-is a single place for your organization to manage container images and language packages (such as Maven and npm). It is fully integrated with Google Cloud’s tooling and runtimes and comes with support for native artifact protocols. More importantly, it supports regional and multi-regional repositories.
-
-### The steps to create regional Docker repository is as follows
-
-- Run the following command to create a new Docker repository named `AF_REGISTRY_NAME` in the location `AF_REGISTRY_LOCATION` with the description "Regional Docker repository".
-
-```shell
-gcloud beta artifacts repositories create $AF_REGISTRY_NAME \
-    --repository-format=docker \
-    --location=$AF_REGISTRY_LOCATION \
-    --project=$PROJECT_ID \
-    --description="Regional Docker repository"
-```
-
-- Run the following command to verify that your repository was created.
-
-```shell
-gcloud beta artifacts repositories list --project=$PROJECT_ID
-```
-
-The supported regions can be found [here](https://cloud.google.com/artifact-registry/docs/repo-organize#locations). The repository URI after creation will be
-```
-{AF_REGISTRY_LOCATION}-docker.pkg.dev/{PROJECT_ID}/{AF_REGISTRY_NAME}/
-```
-and the image full uri typically will be
-```
-{AF_REGISTRY_LOCATION}-docker.pkg.dev/{PROJECT_ID}/{AF_REGISTRY_NAME}/{IMAGE_NAME}:{TAG}
-```
-
-## Regional Endpoint of AI Platform Prediction
+### Regional Endpoint of AI Platform Prediction
 Interacting with AI Platform services, e.g. training and prediction, will require the access of the endpoint. There are two options available, i.e., **global endpoint** and **regional endpoint**:
 - When you create a model resource on the global endpoint, you can specify a region for your model. When you create versions within this model and serve predictions, the prediction nodes run in the specified region. 
 - When you use a regional endpoint, AI Platform Prediction runs your prediction nodes in the endpoint's region. However, in this case AI Platform Prediction provides additional isolation by running all AI Platform Prediction infrastructure in that region.
@@ -193,7 +128,7 @@ For example, if you use the us-east1 region on the global endpoint, your predict
 
 Current available regional endpoints are: `us-central1`, `europe-west4` and `asia-east1`. However, **regional endpoints do not currently support AI Platform Training**.
 
-### Using regional endpoints
+#### Using regional endpoints
 ```python
 from google.api_core.client_options import ClientOptions
 from googleapiclient import discovery
@@ -211,7 +146,9 @@ print(response)
 ```
 
 ### Using regional endpoints of Kubeflow Pipeline GCP components
-The pre-built reusable [GCP Kubeflow Pipeline components](https://github.com/kubeflow/pipelines/tree/master/components/gcp/ml_engine) don't provide regional endpoints capabilities. We have provided a customized version [here](https://github.com/luotigerlsx/pipelines/tree/master/components/gcp). To build and use the customized components, please follow the steps:
+The pre-built reusable [GCP Kubeflow Pipeline components](https://github.com/kubeflow/pipelines/tree/master/components/gcp/ml_engine) don't provide regional 
+endpoints capabilities. We have provided a customized version [here](https://github.com/luotigerlsx/pipelines/tree/master/components/gcp). 
+To build and use the customized components, please follow the steps:
 - Clone the source code
 
 ```shell
@@ -244,6 +181,74 @@ implementation:
 mlengine_deploy_op = comp.load_component_from_url(
     '{internal_accessable_address}/component.yaml')
 
+```
+
+## Enabling GPU and TPU
+### Configure ContainerOp to consume GPUs
+
+After enabling the GPU, the Kubeflow setup script installs a default GPU pool with type nvidia-tesla-k80 with auto-scaling enabled.
+The following code consumes 2 GPUs in a ContainerOp.
+
+```python
+import kfp.dsl as dsl
+gpu_op = dsl.ContainerOp(name='gpu-op', ...).set_gpu_limit(2)
+```
+
+The code above will be compiled into Kubernetes Pod spec:
+
+```yaml
+container:
+  ...
+  resources:
+    limits:
+      nvidia.com/gpu: "2"
+```
+
+If the cluster has multiple node pools with different GPU types, you can specify the GPU type by the following code.
+
+```python
+import kfp.dsl as dsl
+gpu_op = dsl.ContainerOp(name='gpu-op', ...).set_gpu_limit(2)
+gpu_op.add_node_selector_constraint('cloud.google.com/gke-accelerator', 'nvidia-tesla-p4')
+```
+
+The code above will be compiled into Kubernetes Pod spec:
+
+
+```yaml
+container:
+  ...
+  resources:
+    limits:
+      nvidia.com/gpu: "2"
+nodeSelector:
+  cloud.google.com/gke-accelerator: nvidia-tesla-p4
+```
+
+Check the [GKE GPU guide](https://cloud.google.com/kubernetes-engine/docs/how-to/gpus) to learn more about GPU settings. 
+
+### Configure ContainerOp to consume TPUs
+
+Use the following code to configure ContainerOp to consume TPUs on GKE:
+
+```python
+import kfp.dsl as dsl
+import kfp.gcp as gcp
+tpu_op = dsl.ContainerOp(name='tpu-op', ...).apply(gcp.use_tpu(
+  tpu_cores = 8, tpu_resource = 'v2', tf_version = '1.12'))
+```
+
+The above code uses 8 v2 TPUs with TF version to be 1.12. The code above will be compiled into Kubernetes Pod spec:
+
+```yaml
+container:
+  ...
+  resources:
+    limits:
+      cloud-tpus.google.com/v2: "8"
+  metadata:
+    annotations:
+      tf-version.cloud-tpus.google.com: "1.12"
 ```
 
 ## Contributors

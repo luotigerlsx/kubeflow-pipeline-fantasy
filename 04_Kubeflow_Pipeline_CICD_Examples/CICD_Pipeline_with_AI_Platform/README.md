@@ -1,6 +1,6 @@
 # CI/CD for KFP pipelines
 
-In this lab you will walk through authoring of a **Cloud Build** CI/CD workflow that automatically builds and deploys a KFP pipeline. You will also integrate your workflow with **GitHub** by setting up a trigger that starts the  workflow when a new tag is applied to the **GitHub** repo hosting the pipeline's code.
+In this tutorial you will walk through authoring of a **Cloud Build** CI/CD workflow that automatically builds and deploys a KFP pipeline. You will also integrate your workflow with **GitHub** by setting up a trigger that starts the  workflow when a new tag is applied to the **GitHub** repo hosting the pipeline's code.
 
 Follow the instructor who will walk you through the lab. The high level summary of the lab exercises is as follows.
 
@@ -8,7 +8,7 @@ Follow the instructor who will walk you through the lab. The high level summary 
 
 In this exercise you walk-through authoring a **Cloud Build** CI/CD workflow that automatically builds and deploys a KFP pipeline. 
 
-The CI/CD workflow automates the steps you walked through manually during `lab-12-kfp-pipeline`:
+The CI/CD workflow automates the steps:
 1. Builds the trainer image
 1. Builds the base image for custom components
 1. Compiles the pipeline
