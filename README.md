@@ -34,17 +34,19 @@ Before you follow the instructions below to deploy your own Kubeflow cluster, yo
 
 - have a [GCP project setup](https://www.kubeflow.org/docs/gke/deploy/project-setup/) for your Kubeflow deployment 
 with you having the [owner role](https://cloud.google.com/iam/docs/understanding-roles#primitive_role_definitions) 
-for the project and with the following APIs enabled:
-    - [Compute Engine API](https://pantheon.corp.google.com/apis/library/compute.googleapis.com)
-    - [Kubernetes Engine API](https://pantheon.corp.google.com/apis/library/container.googleapis.com)
-    - [Identity and Access Management(IAM) API](https://pantheon.corp.google.com/apis/library/iam.googleapis.com)
-    - [Deployment Manager API](https://pantheon.corp.google.com/apis/library/deploymentmanager.googleapis.com)
-    - [Cloud Resource Manager API](https://pantheon.corp.google.com/apis/library/cloudresourcemanager.googleapis.com)
-    - [Cloud Filestore API](https://pantheon.corp.google.com/apis/library/file.googleapis.com)
-    - [AI Platform Training & Prediction API](https://pantheon.corp.google.com/apis/library/ml.googleapis.com)
-- have set up [OAuth for Cloud IAP](https://www.kubeflow.org/docs/gke/deploy/oauth-setup/)
-- have installed and setup [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+for the project (for purpose of ease experiment) and with the following services enabled:
+    - AI Platform Notebooks: ML experimentation and development 
+    - AI Platform Training: Scalable, serverless model training 
+    - AI Platform Prediction: Scalable, serverless model serving 
+    - Dataflow: Distributed data processing 
+    - BigQuery: Analytics data warehouse
+    - Google Cloud Storage: Artifact store 
+    - Kubeflow Pipelines on GKE: Machine learning pipelines 
+    - ML Metadata on Cloud SQL: Machine learning metadata management 
+    - Cloud Build: CI/CD tooling 
 - have installed [gcloud-sdk](https://cloud.google.com/sdk/)
+- have installed and setup [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+- have set up [OAuth for Cloud IAP](https://www.kubeflow.org/docs/gke/deploy/oauth-setup/) (required for full Kubeflow deployment)
 
 ### Setup Environment
 Deploy Kubeflow Pipeline Service with
@@ -53,15 +55,13 @@ deployment through CLI. (The currently version is designed based on kfp 0.7).
 - [Kubeflow Pipeline Deployment](00_Kubeflow_Pipeline_Deployment_1.0_ipynb) to help you deploy a standalone Kubeflow Pipeline deployment.
 
 ### Running Notebook
-Please not that the above configuration is required for notebook service running outside Kubeflow environment. 
-And the examples demonstrated are fully tested on notebook service for the following three situations:
-- Notebook running on your personal computer
+The examples demonstrated can run in the following three situations:
 - Notebook on AI Platform, Google Cloud Platform
-- Essentially notebook on any environment outside Kubeflow cluster
+- Notebook running in Kubeflow cluster
+- Notebook running outside the above two situations
  
-For notebook running inside Kubeflow cluster, for example JupytHub will be deployed together with kubeflow, the 
-environment variables, e.g. service account, projects and etc, should have been pre-configured while 
-setting up the cluster.
+It is recommended to run through the examples in AI Platform Notebook, which
+has already pre-configured and installed necessary dependencies.
 
 ### Regional Artifact Registry
 [Artifact Registry](https://cloud.google.com/artifact-registry)
