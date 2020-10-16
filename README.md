@@ -26,9 +26,6 @@ are also provided for reference;
 - [Kubeflow Pipeline CI/CD Examples](04_Kubeflow_Pipeline_CICD_Examples): MLOps is an ML engineering culture and practice that aims at unifying ML 
 development (Dev) and ML operation (Ops). MLOps strongly advocates automation and monitoring at all steps of ML system construction, from integration, testing, 
 and releasing to deployment and infrastructure management. CI/CD examples together with Kubeflow Pipeline are provided here.
- 
-Moreover, we have also developed [Kubeflow Cluster Setup](00_Kubeflow_Cluster_Setup.ipynb) notebook to help you deploy a Kubeflow 
-deployment through CLI. (The currently version is designed based on kfp 0.7).
 
 
 ## Setups Overview:
@@ -50,33 +47,11 @@ for the project and with the following APIs enabled:
 - have installed [gcloud-sdk](https://cloud.google.com/sdk/)
 
 ### Setup Environment
-* Deploy a kubeflow cluster through [CLI](https://www.kubeflow.org/docs/gke/deploy/deploy-cli/)
-    - Download and install kfctl
-    - Create user credentials
-    - Setup environment variables
+Deploy Kubeflow Pipeline Service with
+- [Kubeflow Full Deployment](00_Kubeflow_Cluster_Setup.ipynb) to help you deploy a full Kubeflow 
+deployment through CLI. (The currently version is designed based on kfp 0.7).
+- [Kubeflow Pipeline Deployment](00_Kubeflow_Pipeline_Deployment_1.0_ipynb) to help you deploy a standalone Kubeflow Pipeline deployment.
 
-* Create service account
-```bash
-export SA_NAME = [service account name]
-gcloud iam service-accounts create ${SA_NAME}
-gcloud projects add-iam-policy-binding ${PROJECT_ID} \
-    --member serviceAccount:${SA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com \
-    --role 'roles/owner'
-gcloud iam service-accounts keys create ~/key.json \
-    --iam-account ${SA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com
-```
-
-* Install the lastest version of kfp
-```bash
-pip3 install kfp --upgrade --user
-```
-
-* Deploy kubeflow
-```bash
-mkdir -p ${KF_DIR}
-cd $kf_dir
-kfctl apply -V -f ${CONFIG_URI}
-```
 ### Running Notebook
 Please not that the above configuration is required for notebook service running outside Kubeflow environment. 
 And the examples demonstrated are fully tested on notebook service for the following three situations:
