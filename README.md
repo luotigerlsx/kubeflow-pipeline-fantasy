@@ -33,8 +33,8 @@ and releasing to deployment and infrastructure management. CI/CD examples togeth
 Before you follow the instructions below to deploy your own Kubeflow cluster, you should
 
 - have a [GCP project setup](https://www.kubeflow.org/docs/gke/deploy/project-setup/) for your Kubeflow deployment 
-with you having the [owner role](https://cloud.google.com/iam/docs/understanding-roles#primitive_role_definitions) 
-for the project (for purpose of ease experiment) and with the following services enabled:
+with you having the right [access control](https://cloud.google.com/ai-platform/pipelines/docs/access-control) 
+for the project, and with the following services enabled:
     - AI Platform Notebooks: ML experimentation and development 
     - AI Platform Training: Scalable, serverless model training 
     - AI Platform Prediction: Scalable, serverless model serving 
@@ -48,22 +48,22 @@ for the project (for purpose of ease experiment) and with the following services
 - have installed and setup [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 - have set up [OAuth for Cloud IAP](https://www.kubeflow.org/docs/gke/deploy/oauth-setup/) (required for full Kubeflow deployment)
 
-### Setup Environment
+### Kubeflow Pipeline Deployment
 Deploy Kubeflow Pipeline Service with
 - [Kubeflow Full Deployment](00_Kubeflow_Cluster_Setup.ipynb) to help you deploy a full Kubeflow 
 deployment through CLI. (The currently version is designed based on kfp 0.7).
 - [Kubeflow Pipeline Deployment](00_Kubeflow_Pipeline_Deployment_1.0_ipynb) to help you deploy a standalone Kubeflow Pipeline deployment.
 
 ### Running Notebook
-The examples demonstrated can run in the following three situations:
+The examples in this repository can run in the following three environments:
 - Notebook on AI Platform, Google Cloud Platform
 - Notebook running in Kubeflow cluster
 - Notebook running outside the above two situations
  
-It is recommended to run through the examples in AI Platform Notebook, which
+It is recommended to run through the examples in [AI Platform Notebook](https://cloud.google.com/ai-platform-notebooks), which
 has already pre-configured and installed necessary dependencies.
 
-### Regional Artifact Registry
+### (Regional) Artifact Registry
 [Artifact Registry](https://cloud.google.com/artifact-registry)
 is a single place for your organization to manage container images and language packages (such as Maven and npm). It is fully integrated with Google Cloud’s tooling and runtimes and comes with support for native artifact protocols. More importantly, it supports regional and multi-regional repositories.
 
@@ -120,7 +120,7 @@ response = request.execute()
 print(response)
 ```
 
-### Using regional endpoints of Kubeflow Pipeline GCP components
+#### Using regional endpoints of Kubeflow Pipeline GCP components
 The pre-built reusable [GCP Kubeflow Pipeline components](https://github.com/kubeflow/pipelines/tree/master/components/gcp/ml_engine) don't provide regional 
 endpoints capabilities. We have provided a customized version [here](https://github.com/luotigerlsx/pipelines/tree/master/components/gcp). 
 To build and use the customized components, please follow the steps:
@@ -159,6 +159,8 @@ mlengine_deploy_op = comp.load_component_from_url(
 ```
 
 ## Enabling GPU and TPU
+GPU and TPU resources should be properly provisioned in the underlying
+GKE cluster as described [here](https://cloud.google.com/kubernetes-engine/docs/how-to/gpus).
 ### Configure ContainerOp to consume GPUs
 
 After enabling the GPU, the Kubeflow setup script installs a default GPU pool with type nvidia-tesla-k80 with auto-scaling enabled.
