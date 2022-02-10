@@ -1,4 +1,4 @@
-tensorflow==2.1.2
+tensorflow==2.5.3
 kfp==1.0.0
 tfx==0.21.2
 gcfs==0.6.2
